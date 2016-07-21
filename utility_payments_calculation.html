@@ -30,6 +30,8 @@
             htmlElementSelector: ".utility-payments-calculation-main #error_message",
             htmlElementInitHtml: "&nbsp;"
         }
+        // Селектор элемента в который производится вывод.
+        var htmlOutSelector = ".utility-payments-calculation-main #output_block";
         // Обработка ввода значения пользователем.
         $(".utility-payments-calculation-main #average_income").on("change", function () {
             // Очищаем сообщение об ошибке.
@@ -40,7 +42,10 @@
             // Иначе выдаем сообщение с описанием ошибки.
             if (!Number.isNaN(income)) {
                 if (income > 0) {
-                    console.log("income = " + income);
+                    // Введено корректное значение. Производим расчет.
+                    var out = income / 1399.0 / 2.0 * 15.0;
+                    // Выводим результат
+
                 } else {
                     $(message.htmlElementSelector).html(message.negativeNumber);
                 }
@@ -58,7 +63,7 @@
     </p>
     <div>
         <input type="text" id="average_income" />
-        : 1399 : 2 x 15 = <div class="output-block">111</div> %
+        : 1399 : 2 x 15 = <div id="output_block" class="output-block">111</div> %
     </div>
     <div id="error_message" class="error-message">
         &nbsp;
