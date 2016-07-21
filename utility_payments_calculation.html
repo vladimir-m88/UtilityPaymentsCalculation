@@ -1,0 +1,61 @@
+﻿<style>
+    .utility-payments-calculation-main input {
+        border: 2px solid blue;
+        width: 150px;
+    }
+
+    .utility-payments-calculation-main .output-block {
+        display: inline-block;
+        border: 2px solid green;
+        width: 150px;
+    }
+
+    .utility-payments-calculation-main .error-message {
+        margin-top: 10px;
+        color: red;
+    }
+</style>
+
+<!--Подключение jQuery. Используется для отладки. На сайте jQuery уже должна быть подключена,
+    поэтому эту часть нужно удалить.-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!--Подключение jQuery. Конец.-->
+
+<script>
+    $(document).ready(function () {
+        $(".utility-payments-calculation-main #average_income").on("change", function () {
+            // Задаем тексты сообщений об ошибке.
+            var message = {
+                notNumber: "Введенное вами значение не является числом. Необходимо вводить положительное число.",
+                negativeNumber: "Вы ввели отрицательное число или 0. Необходимо вводить положительное число.",
+            }
+            // Считываем введенное пользователем значение.
+            var income = Number($(this).val());
+            // Если введено положительное число, то производим расчет и выводим результат.
+            // Иначе выдаем сообщение с описанием ошибки.
+            if (!Number.isNaN(income)) {
+                if (income > 0) {
+                } else {
+                    $(".utility-payments-calculation-main #error_message").html(message.negativeNumber);
+                }
+            } else {
+                $(".utility-payments-calculation-main #error_message").html(message.notNumber);
+            }
+        });
+    });
+</script>
+
+<div class="utility-payments-calculation-main">
+    <p>
+        Введите значение в синий прямоугольник и нажмите Enter либо щелкните левой кнопной мыши
+        вне поля ввода.
+    </p>
+    <div>
+        <input type="text" id="average_income" />
+        : 1399 : 2 x 15 = <div class="output-block">111</div> %
+    </div>
+    <div id="error_message" class="error-message">
+
+    </div>
+    <p>Результат будет в зеленом прямоугольнике.</p>
+</div>
