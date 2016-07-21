@@ -2,12 +2,14 @@
     .utility-payments-calculation-main input {
         border: 2px solid blue;
         width: 150px;
+        padding-left: 5px;
     }
 
     .utility-payments-calculation-main .output-block {
         display: inline-block;
         border: 2px solid green;
         width: 150px;
+        padding-left: 5px;
     }
 
     .utility-payments-calculation-main .error-message {
@@ -45,7 +47,7 @@
                     // Введено корректное значение. Производим расчет.
                     var out = income / 1399.0 / 2.0 * 15.0;
                     // Выводим результат
-
+                    $(htmlOutSelector).html(out.toFixed(2));
                 } else {
                     $(message.htmlElementSelector).html(message.negativeNumber);
                 }
