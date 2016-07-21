@@ -42,6 +42,8 @@
         $(htmlInputSelector).on("change", function () {
             // Очищаем сообщение об ошибке.
             $(message.htmlElementSelector).html(message.htmlElementInitHtml);
+            // Очищаем поле вывода значения.
+            $(htmlOutSelector).html("&nbsp;");
             // Считываем введенное пользователем значение.
             var income = Number($(this).val());
             // Если введено положительное число, то производим расчет и выводим результат.
