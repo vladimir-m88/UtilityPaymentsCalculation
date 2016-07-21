@@ -17,19 +17,23 @@
 </style>
 
 <!--Подключение jQuery. Используется для отладки. На сайте jQuery уже должна быть подключена,
-    поэтому перед размещением на сайте эту часть нужно удалить.-->
+    поэтому, перед размещением на сайте, эту часть нужно удалить.-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!--Подключение jQuery. Конец.-->
 
 <script>
     $(document).ready(function () {
+        // Создаем объект для хранения информации сообщений об ошибках.
+        var message = {
+            notNumber: "Введенное вами значение не является числом. Необходимо вводить положительное число.",
+            negativeNumber: "Вы ввели отрицательное число или 0. Необходимо вводить положительное число.",
+            htmlElementSelector: ".utility-payments-calculation-main #error_message",
+            htmlElementInitHtml: "&nbsp;"
+        }
+        // Обработка ввода значения пользователем.
         $(".utility-payments-calculation-main #average_income").on("change", function () {
-            // Задаем тексты сообщений об ошибке.
-            var message = {
-                notNumber: "Введенное вами значение не является числом. Необходимо вводить положительное число.",
-                negativeNumber: "Вы ввели отрицательное число или 0. Необходимо вводить положительное число.",
-                htmlElementSelector: ".utility-payments-calculation-main #error_message"
-            }
+            // Очищаем сообщение об ошибке.
+            $(message.htmlElementSelector).html(message.htmlElementInitHtml);
             // Считываем введенное пользователем значение.
             var income = Number($(this).val());
             // Если введено положительное число, то производим расчет и выводим результат.
