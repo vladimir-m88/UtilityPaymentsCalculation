@@ -17,7 +17,7 @@
 </style>
 
 <!--Подключение jQuery. Используется для отладки. На сайте jQuery уже должна быть подключена,
-    поэтому эту часть нужно удалить.-->
+    поэтому перед размещением на сайте эту часть нужно удалить.-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!--Подключение jQuery. Конец.-->
 
@@ -28,6 +28,7 @@
             var message = {
                 notNumber: "Введенное вами значение не является числом. Необходимо вводить положительное число.",
                 negativeNumber: "Вы ввели отрицательное число или 0. Необходимо вводить положительное число.",
+                htmlElementSelector: ".utility-payments-calculation-main #error_message"
             }
             // Считываем введенное пользователем значение.
             var income = Number($(this).val());
@@ -35,11 +36,12 @@
             // Иначе выдаем сообщение с описанием ошибки.
             if (!Number.isNaN(income)) {
                 if (income > 0) {
+                    console.log("income = " + income);
                 } else {
-                    $(".utility-payments-calculation-main #error_message").html(message.negativeNumber);
+                    $(message.htmlElementSelector).html(message.negativeNumber);
                 }
             } else {
-                $(".utility-payments-calculation-main #error_message").html(message.notNumber);
+                $(message.htmlElementSelector).html(message.notNumber);
             }
         });
     });
@@ -55,7 +57,7 @@
         : 1399 : 2 x 15 = <div class="output-block">111</div> %
     </div>
     <div id="error_message" class="error-message">
-
+        &nbsp;
     </div>
     <p>Результат будет в зеленом прямоугольнике.</p>
 </div>
