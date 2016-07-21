@@ -1,13 +1,13 @@
 ﻿<style>
     .utility-payments-calculation-main input {
-        border: 2px solid blue;
+        border: 3px solid blue;
         width: 150px;
         padding-left: 5px;
     }
 
     .utility-payments-calculation-main .output-block {
         display: inline-block;
-        border: 2px solid green;
+        border: 3px solid green;
         width: 150px;
         padding-left: 5px;
     }
@@ -27,8 +27,8 @@
     $(document).ready(function () {
         // Создаем объект для хранения информации сообщений об ошибках.
         var message = {
-            notNumber: "Введенное вами значение не является числом. Необходимо вводить положительное число.",
-            negativeNumber: "Вы ввели отрицательное число или 0. Необходимо вводить положительное число.",
+            notNumber: "Введене вами значення не є числом. Необхідно вводити додатне число.",
+            negativeNumber: "Ви ввели негативне число або 0. Необхідно вводити додатне число.",
             htmlElementSelector: ".utility-payments-calculation-main #error_message",
             htmlElementInitHtml: "&nbsp;"
         }
@@ -60,15 +60,27 @@
 
 <div class="utility-payments-calculation-main">
     <p>
-        Введите значение в синий прямоугольник и нажмите Enter либо щелкните левой кнопной мыши
-        вне поля ввода.
+        Підставте у синій прямокутник свій середньомісячний сукупний дохід сім’ї
+        за попередній календарний рік на одну особу.
     </p>
     <div>
         <input type="text" id="average_income" />
-        : 1399 : 2 x 15 = <div id="output_block" class="output-block">111</div> %
+        : 1399 : 2 x 15 = <div id="output_block" class="output-block">&nbsp;</div> %
     </div>
     <div id="error_message" class="error-message">
         &nbsp;
     </div>
-    <p>Результат будет в зеленом прямоугольнике.</p>
+    <p>
+        У зеленому прямокутнику Ви отримаєте свій обов’язковий
+        відсоток платежу за комунальні послуги.
+        <ul>
+            <li>
+                1399 –  прожитковий мінімум на одну особу на місяць
+                (з 1 січня 2016 – 1 330 грн.,  з 1 травня – 1 399 грн.,
+                з 1 грудня – 1 496 грн.);
+            </li>
+            <li>2 – базовий коефіцієнт доходу для призначення субсидії;</li>
+            <li>15 – базова норма плати за житлово-комунальні послуги (%).</li>
+        </ul>
+    </p>
 </div>
