@@ -32,17 +32,21 @@
             htmlElementSelector: ".utility-payments-calculation-main #error_message",
             htmlElementInitHtml: "&nbsp;"
         }
+        // Селектор элемента в который производится ввод значения пользователем.
+        var htmlInputSelector = ".utility-payments-calculation-main #average_income";
         // Селектор элемента в который производится вывод.
         var htmlOutSelector = ".utility-payments-calculation-main #output_block";
+        // Очищаем поле ввода значения.
+        $(htmlInputSelector).val("");
         // Обработка ввода значения пользователем.
-        $(".utility-payments-calculation-main #average_income").on("change", function () {
+        $(htmlInputSelector).on("change", function () {
             // Очищаем сообщение об ошибке.
             $(message.htmlElementSelector).html(message.htmlElementInitHtml);
             // Считываем введенное пользователем значение.
             var income = Number($(this).val());
             // Если введено положительное число, то производим расчет и выводим результат.
             // Иначе выдаем сообщение с описанием ошибки.
-            if (!Number.isNaN(income)) {
+            if (!isNaN(income)) {
                 if (income > 0) {
                     // Введено корректное значение. Производим расчет.
                     var out = income / 1399.0 / 2.0 * 15.0;
