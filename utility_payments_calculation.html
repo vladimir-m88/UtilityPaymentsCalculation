@@ -9,14 +9,21 @@
 
     .utility-payments-calculation-main input {
         border: 3px solid blue;
-        width: 150px;
+        width: 125px;
         padding-left: 5px;
     }
 
-    .utility-payments-calculation-main .output-block {
+    .utility-payments-calculation-main .output-block-percent {
         display: inline-block;
         border: 3px solid green;
-        width: 150px;
+        width: 125px;
+        padding-left: 5px;
+    }
+
+    .utility-payments-calculation-main .output-block-income {
+        display: inline-block;
+        border-bottom: 3px solid blue;
+        width: 125px;
         padding-left: 5px;
     }
 
@@ -51,7 +58,7 @@
         // Селектор элемента в который производится ввод значения пользователем.
         var htmlInputSelector = ".utility-payments-calculation-main #average_income";
         // Селектор элемента в который производится вывод.
-        var htmlOutSelector = ".utility-payments-calculation-main #output_block";
+        var htmlOutSelector = ".utility-payments-calculation-main #output_block_percent";
         // Очищаем поле ввода значения.
         $(htmlInputSelector).val("");
         // Обработка ввода значения пользователем.
@@ -86,10 +93,14 @@
         Для розрахунку максимально можливої суми платежу за комунальні послуги
         у синьому прямокутнику введіть розмір середньомісячного сукупного доходу сім’ї
         на одну особу за попередній календарний рік
-        <input type="text" id="average_income" />
+        <input type="text" id="average_income" />.
     </p>
     <ol>
-        <li></li>
+        <li>
+            Ваш обов`язковий відсоток платежу за комунальні послуги становить:
+            <div id="output_block_income" class="output-block-income">111</div>
+            : 1399 : 2 * 15 % = <div id="output_block_percent" class="output-block-percent">&nbsp;</div> %.
+        </li>
         <li></li>
         <li></li>
     </ol>
@@ -117,7 +128,7 @@
     </p>
     <div>
         <input type="text" id="average_income" />
-        : 1399 : 2 x 15 = <div id="output_block" class="output-block">&nbsp;</div> %
+        : 1399 : 2 x 15 = <div id="output_block_percent" class="output-block-percent">&nbsp;</div> %
     </div>
     <div id="error_message" class="error-message">
         &nbsp;
