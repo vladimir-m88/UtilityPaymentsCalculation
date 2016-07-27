@@ -20,9 +20,21 @@
         padding-left: 5px;
     }
 
+        .utility-payments-calculation-main .output-block-percent.in-expression {
+            border: none;
+            border-bottom: 3px solid green;
+        }
+
     .utility-payments-calculation-main .output-block-income {
         display: inline-block;
         border-bottom: 3px solid blue;
+        width: 125px;
+        padding-left: 5px;
+    }
+
+    .utility-payments-calculation-main .output-block-money {
+        display: inline-block;
+        border: 3px solid orange;
         width: 125px;
         padding-left: 5px;
     }
@@ -61,8 +73,9 @@
         }
         // Селекторы элементов в которые производится вывод.
         var htmlOutSelector = {
-            income: ".utility-payments-calculation-main #output_block_income",
-            percent: ".utility-payments-calculation-main #output_block_percent",
+            income: ".utility-payments-calculation-main .output-block-income",
+            percent: ".utility-payments-calculation-main .output-block-percent",
+            money: ".utility-payments-calculation-main .output-block-money",
         }
         // Очищаем поле ввода значения.
         $(htmlInputSelector.income).val("");
@@ -87,6 +100,7 @@
                     // Выводим результат
                     $(htmlOutSelector.income).html(income.toFixed(2));
                     $(htmlOutSelector.percent).html(outPercent.toFixed(2));
+                    $(htmlOutSelector.money).html(((outPercent / 100.0) * income).toFixed(2));
                 } else {
                     $(message.htmlElementSelector).html(message.negativeNumber);
                 }
@@ -108,10 +122,15 @@
     <ol>
         <li>
             Ваш обов`язковий відсоток платежу за комунальні послуги становить:
-            <div id="output_block_income" class="output-block-income">&nbsp;</div>
-            : 1399 : 2 * 15 % = <div id="output_block_percent" class="output-block-percent">&nbsp;</div> %.
+            <div class="output-block-income">&nbsp;</div>
+            : 1399 : 2 * 15 % = <div class="output-block-percent">&nbsp;</div> %.
         </li>
-        <li></li>
+        <li>
+            Максимальна сума платежу за комунальні послуги має бути  не більше ніж:
+            <div class="output-block-percent in-expression">&nbsp;</div> % *
+            <div class="output-block-income">&nbsp;</div> грн. =
+            <div class="output-block-money">&nbsp;</div> грн.
+        </li>
         <li></li>
     </ol>
     <p class="bold">
