@@ -3,6 +3,10 @@
         text-align: center;
     }
 
+    .utility-payments-calculation-main .bold {
+        font-weight: bold;
+    }
+
     .utility-payments-calculation-main input {
         border: 3px solid blue;
         width: 150px;
@@ -19,6 +23,14 @@
     .utility-payments-calculation-main .error-message {
         margin-top: 10px;
         color: red;
+    }
+
+    .utility-payments-calculation-main .calculation-explanations ul li {
+        list-style-type: none;
+    }
+
+    .utility-payments-calculation-main .calculation-explanations ul li:before {
+        content: "— ";
     }
 </style>
 
@@ -71,6 +83,35 @@
 <div class="utility-payments-calculation-main">
     <h3 class="block-title">РОЗРАХУНОК РОЗМІРУ ОБОВ’ЯЗКОВОЇ СУМИ ПЛАТЕЖУ ЗА КОМУНАЛЬНІ ПОСЛУГИ ДЛЯ ВАШОЇ РОДИНИ</h3>
     <p>
+        Для розрахунку максимально можливої суми платежу за комунальні послуги
+        у синьому прямокутнику введіть розмір середньомісячного сукупного доходу сім’ї
+        на одну особу за попередній календарний рік
+        <input type="text" id="average_income" />
+    </p>
+    <ol>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ol>
+    <p class="bold">
+        Якщо Ваші щомісячні витрати на комунальні послуги вище розрахованої максимальної суми платежу, рекомендуємо
+        <a href="http://marsovet.org.ua/articles/show/menu/2108">звернутися до районного управління соціального захисту</a>
+        для отримання більш детальної інформації та оформлення субсидії.
+    </p>
+    <div class="calculation-explanations">
+        <p>
+            Пояснення щодо розрахунку:
+        </p>
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <p>
+        <a href="http://marsovet.org.ua/articles/show/menu/2108">Детальніше про оформлення субсидій >></a>
+    </p>
+    <!--<p>
         Підставте у синій прямокутник свій середньомісячний сукупний дохід сім’ї
         за попередній календарний рік на одну особу.
     </p>
@@ -93,5 +134,5 @@
             <li>2 – базовий коефіцієнт доходу для призначення субсидії;</li>
             <li>15 – базова норма плати за житлово-комунальні послуги (%).</li>
         </ul>
-    </p>
+    </p>-->
 </div>
