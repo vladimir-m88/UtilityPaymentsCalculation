@@ -63,38 +63,48 @@
 <!--Подключение jQuery. Конец.-->
 
 <script>
-    $(document).ready(function () {
-        // Создаем объект для хранения информации сообщений об ошибках.
-        var message = {
-            notNumber: "Введене вами значення не є числом. Необхідно вводити додатне число.",
-            negativeNumber: "Ви ввели негативне число або 0. Необхідно вводити додатне число.",
-            htmlElementSelector: ".utility-payments-calculation-main #error_message",
-            htmlElementInitHtml: "&nbsp;"
-        }
-        // Селекторы элементов ввода значений пользователем.
-        var htmlInputSelector = {
-            income: ".utility-payments-calculation-main #average_income",
-        }
-        // Селекторы элементов в которые производится вывод.
-        var htmlOutSelector = {
-            income: ".utility-payments-calculation-main .output-block-income",
-            percent: ".utility-payments-calculation-main .output-block-percent",
-            money: ".utility-payments-calculation-main .output-block-money",
-        }
-        // Очищаем поле ввода значения.
-        $(htmlInputSelector.income).val("");
-        // Обработка ввода значения пользователем.
-        $(htmlInputSelector.income).on("change", function () {
-            // Очищаем сообщение об ошибке.
-            $(message.htmlElementSelector).html(message.htmlElementInitHtml);
-            // Очищаем поля вывода значений.
-            for (var key in htmlOutSelector) {
-                if (typeof htmlOutSelector[key] == "string") {
-                    $(htmlOutSelector[key]).html("&nbsp;");
-                }
+    (function () {
+        // Обработчик события готовности DOM.
+        $(document).ready(function () {
+            // Создаем объект для хранения информации сообщений об ошибках.
+            var message = {
+                notNumber: "Введене вами значення не є числом. Необхідно вводити додатне число.",
+                negativeNumber: "Ви ввели негативне число або 0. Необхідно вводити додатне число.",
+                htmlElementSelector: ".utility-payments-calculation-main #error_message",
+                htmlElementInitHtml: "&nbsp;"
             }
-            // Считываем введенное пользователем значение.
-            var income = Number($(this).val());
+            // Селекторы элементов ввода значений пользователем.
+            var htmlInputSelector = {
+                income: ".utility-payments-calculation-main #average_income",
+            }
+            // Селекторы элементов в которые производится вывод.
+            var htmlOutSelector = {
+                income: ".utility-payments-calculation-main .output-block-income",
+                percent: ".utility-payments-calculation-main .output-block-percent",
+                money: ".utility-payments-calculation-main .output-block-money",
+            }
+            // Очищаем поле ввода значения.
+            $(htmlInputSelector.income).val("");
+            // Обработка ввода значения пользователем.
+            $(htmlInputSelector.income).on("change", function () {
+                // Очищаем сообщение об ошибке.
+                $(message.htmlElementSelector).html(message.htmlElementInitHtml);
+                // Очищаем поля вывода значений.
+                for (var key in htmlOutSelector) {
+                    if (typeof htmlOutSelector[key] == "string") {
+                        $(htmlOutSelector[key]).html("&nbsp;");
+                    }
+                }
+                // Считываем введенное пользователем значение.
+                var income = Number($(this).val());
+                // Производим расчеты и выводим результаты.
+                Calculate(income, htmlOutSelector, message);
+            });
+        });
+
+        // Функция, котрая производит расчет на основании введенного пользователем значения
+        // и выводит результат.
+        function Calculate(income, htmlOutSelector, message) {
             // Если введено положительное число, то производим расчет и выводим результат.
             // Иначе выдаем сообщение с описанием ошибки.
             if (!isNaN(income)) {
@@ -111,8 +121,8 @@
             } else {
                 $(message.htmlElementSelector).html(message.notNumber);
             }
-        });
-    });
+        }
+    })();
 </script>
 
 <div class="utility-payments-calculation-main">
@@ -149,13 +159,13 @@
         <ul>
             <li>
                 Приклад розрахунку середньомісячного сукупного доходу сім’ї за попередній календарний рік
-                на одну особу.<br />
+                на одну особу.
                 <div class="calculation-example">
                     Наприклад, доходи членів сім’і  за попередній  рік становили:
                     <ol>
                         <li>пенсія бабусі – 10 000 грн;</li>
                         <li>зарплата батька – 50 000 грн;</li>
-                        <li> допомога, що отримує мама на дитину – 12 000 грн;</li>
+                        <li>допомога, що отримує мама на дитину – 12 000 грн;</li>
                         <li>дитина 3-х років – не отримує дохід.</li>
                     </ol>
                     Виходячи з цього сукупний дохід за минулий рік складає: 10 000 + 50 000 + 12 000 = 72 000 грн.
@@ -178,28 +188,4 @@
     <p>
         <a href="http://marsovet.org.ua/articles/show/menu/2108">Детальніше про оформлення субсидій >></a>
     </p>
-    <!--<p>
-        Підставте у синій прямокутник свій середньомісячний сукупний дохід сім’ї
-        за попередній календарний рік на одну особу.
-    </p>
-    <div>
-        <input type="text" id="average_income" />
-        : 1399 : 2 x 15 = <div id="output_block_percent" class="output-block-percent">&nbsp;</div> %
-    </div>
-    <div id="error_message" class="error-message">
-        &nbsp;
-    </div>
-    <p>
-        У зеленому прямокутнику Ви отримаєте свій обов’язковий
-        відсоток платежу за комунальні послуги.
-        <ul>
-            <li>
-                1399 –  прожитковий мінімум на одну особу на місяць
-                (з 1 січня 2016 – 1 330 грн.,  з 1 травня – 1 399 грн.,
-                з 1 грудня – 1 496 грн.);
-            </li>
-            <li>2 – базовий коефіцієнт доходу для призначення субсидії;</li>
-            <li>15 – базова норма плати за житлово-комунальні послуги (%).</li>
-        </ul>
-    </p>-->
 </div>
