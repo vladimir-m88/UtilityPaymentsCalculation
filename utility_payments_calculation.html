@@ -55,18 +55,27 @@
             htmlElementSelector: ".utility-payments-calculation-main #error_message",
             htmlElementInitHtml: "&nbsp;"
         }
-        // Селектор элемента в который производится ввод значения пользователем.
-        var htmlInputSelector = ".utility-payments-calculation-main #average_income";
-        // Селектор элемента в который производится вывод.
-        var htmlOutSelector = ".utility-payments-calculation-main #output_block_percent";
+        // Селекторы элементов ввода значений пользователем.
+        var htmlInputSelector = {
+            income: ".utility-payments-calculation-main #average_income",
+        }
+        // Селекторы элементов в которые производится вывод.
+        var htmlOutSelector = {
+            income: ".utility-payments-calculation-main #output_block_income",
+            percent: ".utility-payments-calculation-main #output_block_percent",
+        }
         // Очищаем поле ввода значения.
-        $(htmlInputSelector).val("");
+        $(htmlInputSelector.income).val("");
         // Обработка ввода значения пользователем.
-        $(htmlInputSelector).on("change", function () {
+        $(htmlInputSelector.income).on("change", function () {
             // Очищаем сообщение об ошибке.
             $(message.htmlElementSelector).html(message.htmlElementInitHtml);
-            // Очищаем поле вывода значения.
-            $(htmlOutSelector).html("&nbsp;");
+            // Очищаем поля вывода значений.
+            for (var key in htmlOutSelector) {
+                if (typeof htmlOutSelector[key] == "string") {
+                    $(htmlOutSelector[key]).html("&nbsp;");
+                }
+            }
             // Считываем введенное пользователем значение.
             var income = Number($(this).val());
             // Если введено положительное число, то производим расчет и выводим результат.
@@ -74,9 +83,10 @@
             if (!isNaN(income)) {
                 if (income > 0) {
                     // Введено корректное значение. Производим расчет.
-                    var out = income / 1399.0 / 2.0 * 15.0;
+                    var outPercent = income / 1399.0 / 2.0 * 15.0;
                     // Выводим результат
-                    $(htmlOutSelector).html(out.toFixed(2));
+                    $(htmlOutSelector.income).html(income.toFixed(2));
+                    $(htmlOutSelector.percent).html(outPercent.toFixed(2));
                 } else {
                     $(message.htmlElementSelector).html(message.negativeNumber);
                 }
@@ -98,7 +108,7 @@
     <ol>
         <li>
             Ваш обов`язковий відсоток платежу за комунальні послуги становить:
-            <div id="output_block_income" class="output-block-income">111</div>
+            <div id="output_block_income" class="output-block-income">&nbsp;</div>
             : 1399 : 2 * 15 % = <div id="output_block_percent" class="output-block-percent">&nbsp;</div> %.
         </li>
         <li></li>
