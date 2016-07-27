@@ -40,17 +40,21 @@
     }
 
     .utility-payments-calculation-main .error-message {
-        margin-top: 10px;
+        /*margin-top: 10px;*/
         color: red;
     }
 
-    .utility-payments-calculation-main .calculation-explanations ul li {
+    .utility-payments-calculation-main .calculation-explanations ul > li {
         list-style-type: none;
     }
 
-        .utility-payments-calculation-main .calculation-explanations ul li:before {
+        .utility-payments-calculation-main .calculation-explanations ul > li:before {
             content: "— ";
         }
+
+    .utility-payments-calculation-main .calculation-explanations .calculation-example {
+        padding-left: 35px;
+    }
 </style>
 
 <!--Подключение jQuery. Используется для отладки. На сайте jQuery уже должна быть подключена,
@@ -119,6 +123,7 @@
         на одну особу за попередній календарний рік
         <input type="text" id="average_income" />.
     </p>
+    <div id="error_message" class="error-message">&nbsp;</div>
     <ol>
         <li>
             Ваш обов`язковий відсоток платежу за комунальні послуги становить:
@@ -131,7 +136,6 @@
             <div class="output-block-income">&nbsp;</div> грн. =
             <div class="output-block-money">&nbsp;</div> грн.
         </li>
-        <li></li>
     </ol>
     <p class="bold">
         Якщо Ваші щомісячні витрати на комунальні послуги вище розрахованої максимальної суми платежу, рекомендуємо
@@ -143,9 +147,32 @@
             Пояснення щодо розрахунку:
         </p>
         <ul>
-            <li></li>
-            <li></li>
-            <li></li>
+            <li>
+                Приклад розрахунку середньомісячного сукупного доходу сім’ї за попередній календарний рік
+                на одну особу.<br />
+                <div class="calculation-example">
+                    Наприклад, доходи членів сім’і  за попередній  рік становили:
+                    <ol>
+                        <li>пенсія бабусі – 10 000 грн;</li>
+                        <li>зарплата батька – 50 000 грн;</li>
+                        <li> допомога, що отримує мама на дитину – 12 000 грн;</li>
+                        <li>дитина 3-х років – не отримує дохід.</li>
+                    </ol>
+                    Виходячи з цього сукупний дохід за минулий рік складає: 10 000 + 50 000 + 12 000 = 72 000 грн.
+                    Середньомісячний сукупний дохід сім’ї на одну особу складає
+                    <div style="display: inline-block;">72 000 / 4 / 12 = 1 500 грн.</div>
+                </div>
+            </li>
+            <li>
+                1399 – прожитковий мінімум на одну особу на місяць
+                (з 1 травня 2016 р.– 1 399 грн., з 1 грудня 2016 р. – 1 496 грн.);
+            </li>
+            <li>
+                2 – базовий коефіцієнт доходу для призначення субсидії;
+            </li>
+            <li>
+                15 – базова норма плати за житлово-комунальні послуги (%).
+            </li>
         </ul>
     </div>
     <p>
