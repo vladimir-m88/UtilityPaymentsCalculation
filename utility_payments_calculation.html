@@ -57,6 +57,10 @@
             color: red;
         }
 
+            .utility-payments-calculation-main .error-message.information {
+                color: blue;
+            }
+
         .utility-payments-calculation-main .calculation-explanations ul > li {
             list-style-type: none;
         }
@@ -83,8 +87,10 @@
             var message = {
                 notNumber: "Введене вами значення не є числом. Необхідно вводити додатне число.",
                 negativeNumber: "Ви ввели негативне число або 0. Необхідно вводити додатне число.",
+                subsidyUnavailable: "Можливість отримання субсидії відсутня.",
                 htmlElementSelector: ".utility-payments-calculation-main #error_message",
-                htmlElementInitHtml: "&nbsp;"
+                informationClass: "information",
+                htmlElementInitHtml: "&nbsp;",
             }
             // Селекторы элементов ввода значений пользователем.
             var htmlInputSelector = {
@@ -100,8 +106,9 @@
             $(htmlInputSelector.income).val("");
             // Обработка ввода значения пользователем.
             $(htmlInputSelector.income).on("change", function () {
-                // Очищаем сообщение об ошибке.
+                // Очищаем сообщение об ошибке. И удаляем класс информативного сообщения.
                 $(message.htmlElementSelector).html(message.htmlElementInitHtml);
+                $(message.htmlElementSelector).removeClass(message.informationClass);
                 // Очищаем поля вывода значений.
                 for (var key in htmlOutSelector) {
                     if (typeof htmlOutSelector[key] == "string") {
@@ -124,12 +131,19 @@
                 if (income > 0) {
                     // Введено корректное значение. Производим расчет.
                     var outPercent = income / 1399.0 / 2.0 * 15.0;
-                    // Округляем до 2го знака после запятой.
-                    outPercent = Math.round(outPercent * 100) / 100;
-                    // Выводим результат
-                    $(htmlOutSelector.income).html(income.toFixed(2));
-                    $(htmlOutSelector.percent).html(outPercent.toFixed(2));
-                    $(htmlOutSelector.money).html(((outPercent / 100.0) * income).toFixed(2));
+                    // Если процент платежа менее 100 %, то выводим результаты.
+                    // Иначе выводим сообщение, что субсидия не положена.
+                    if (outPercent < 100.0) {
+                        // Округляем до 2го знака после запятой.
+                        outPercent = Math.round(outPercent * 100) / 100;
+                        // Выводим результат
+                        $(htmlOutSelector.income).html(income.toFixed(2));
+                        $(htmlOutSelector.percent).html(outPercent.toFixed(2));
+                        $(htmlOutSelector.money).html(((outPercent / 100.0) * income).toFixed(2));
+                    } else {
+                        $(message.htmlElementSelector).addClass(message.informationClass);
+                        $(message.htmlElementSelector).html(message.subsidyUnavailable);
+                    }
                 } else {
                     $(message.htmlElementSelector).html(message.negativeNumber);
                 }
