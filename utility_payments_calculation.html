@@ -1,14 +1,15 @@
 ﻿<style>
     .utility-payments-calculation-main {
-        line-height: 125%;
+        font: 13px tahoma,helvetica,arial,verdana;
+        /*line-height: 125%;*/
     }
 
-        .utility-payments-calculation-main .average-income,
+        /*.utility-payments-calculation-main .average-income,
         .utility-payments-calculation-main .output-block-income,
         .utility-payments-calculation-main .output-block-percent,
         .utility-payments-calculation-main .output-block-money {
             width: 125px;
-        }
+        }*/
 
             .utility-payments-calculation-main .average-income,
             .utility-payments-calculation-main .output-block-percent:not(.in-expression),
@@ -82,6 +83,21 @@
             border: 2px solid #99b3ff;
             padding: 20px;
         }
+
+            .utility-payments-calculation-main .input-output-block table {
+                width: 100%;
+                font: 13px tahoma,helvetica,arial,verdana;
+            }
+
+            .utility-payments-calculation-main .input-output-block .alignment-right {
+                text-align: right;
+            }
+
+            .utility-payments-calculation-main .input-output-block input {
+                margin-right: 20px;
+                border: 2px solid #99b3ff;
+                width: 125px;
+            }
 </style>
 
 <!--Подключение jQuery. Используется для отладки. На сайте jQuery уже должна быть подключена,
@@ -168,16 +184,28 @@
     <div class="main-column">
         <h3 class="block-title">РОЗРАХУНОК РОЗМІРУ ОБОВ’ЯЗКОВОЇ СУМИ ПЛАТЕЖУ ЗА КОМУНАЛЬНІ ПОСЛУГИ ДЛЯ ВАШОЇ РОДИНИ</h3>
         <div class="input-output-block">
-            <h5>Для розрахунку введіть:</h5>
-            <div>
-                Розмір середньомісячного  доходу всіх осіб, які проживають
-                у кватирі (будинку) за попередній календарний рік
-                <input />
-            </div>
-            <div>
-                Чисельність осіб, які зареєстровані у кватирі (будинку)
-                <input />
-            </div>
+            <h4>Для розрахунку введіть:</h4>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            Розмір середньомісячного  доходу всіх осіб, які проживають
+                            у кватирі (будинку) за попередній календарний рік
+                        </td>
+                        <td class="alignment-right">
+                            <input id="average_income" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Чисельність осіб, які зареєстровані у кватирі (будинку)
+                        </td>
+                        <td class="alignment-right">
+                            <input id="inhabitants_number" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <!--<p>
             Для розрахунку максимально можливої суми платежу за комунальні послуги
