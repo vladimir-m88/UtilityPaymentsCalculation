@@ -8,6 +8,10 @@
             text-align: center;
         }
 
+        .utility-payments-calculation-main li {
+            margin: 10px auto;
+        }
+
         .utility-payments-calculation-main .average-income:not(.in-expression) {
             border: 3px solid blue;
             padding-left: 5px;
@@ -40,11 +44,9 @@
         }
 
         .utility-payments-calculation-main .input-output-block {
-            width: 100%;
             border: 2px solid #99b3ff;
-            padding: 20px;
+            padding: 15px 20px;
             margin-bottom: 20px;
-            display: table;
         }
 
             .utility-payments-calculation-main .input-output-block table {
@@ -89,6 +91,13 @@
                 display: inline-block;
                 white-space: nowrap;
             }
+
+        .utility-payments-calculation-main .main-column hr {
+            height: 2px;
+            border: none;
+            color: #99b3ff;
+            background-color: #99b3ff;
+        }
 </style>
 
 <!--Подключение jQuery. Используется для отладки. На сайте jQuery уже должна быть подключена,
@@ -173,7 +182,7 @@
 
 <div class="utility-payments-calculation-main">
     <div class="main-column">
-        <h3 class="block-title">РОЗРАХУНОК РОЗМІРУ ОБОВ’ЯЗКОВОЇ СУМИ ПЛАТЕЖУ ЗА КОМУНАЛЬНІ ПОСЛУГИ ДЛЯ ВАШОЇ РОДИНИ</h3>
+        <h3 class="block-title">ОРІЄНТОВНИЙ РОЗРАХУНОК РОЗМІРУ МАКСИМАЛЬНОЇ СУМИ ПЛАТЕЖУ ЗА КОМУНАЛЬНІ ПОСЛУГИ ДЛЯ ВАШОЇ РОДИНИ</h3>
         <div class="input-output-block">
             <h4>Для розрахунку введіть:</h4>
             <table>
@@ -242,6 +251,41 @@
                 </tbody>
             </table>
         </div>
+        <hr />
+        <div>
+            <h4>Звертаємо увагу!</h4>
+            <ul>
+                <li>
+                    Якщо Ваші щомісячні витрати на комунальні послуги вище розрахованої максимальної суми платежу, рекомендуємо
+                    <a href="http://marsovet.org.ua/articles/show/menu/2108">звернутися до районного управління соціального захисту</a>
+                    для отримання більш детальної інформації та оформлення субсидії.
+                </li>
+                <li>
+                    Всі розрахунки є попередніми та не охоплюють всі критерії, що враховуються при призначенні субсидії.
+                </li>
+                <li>
+                    Субсидія розраховується у межах визначених
+                    <a href="http://marsovet.org.ua/articles/show/article/2762">соціальних стандартів  у сфері житлово комунального обслуговування.</a>
+                </li>
+            </ul>
+        </div>
+        <hr />
+        <div>
+            <h4>Пояснення щодо розрахунку:</h4>
+            <ul>
+                <li>
+                    «1399» – прожитковий мінімум на одну особу на місяць (з 1 травня 2016 р.– 1 399 грн., з 1 грудня 2016 р. – 1 496 грн.);
+                </li>
+                <li>
+                    «2» – базовий коефіцієнт доходу для призначення субсидії;
+                </li>
+                <li>
+                    «15%» – базова норма плати за житлово-комунальні послуги (%).
+                </li>
+            </ul>
+        </div>
+        <a href="http://marsovet.org.ua/articles/show/menu/2108">Детальніше про оформлення субсидій>></a>
+        <hr />
         <!--<p>
             Для розрахунку максимально можливої суми платежу за комунальні послуги
             у синьому прямокутнику введіть розмір середньомісячного сукупного доходу сім’ї
