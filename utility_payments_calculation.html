@@ -34,12 +34,10 @@
             .utility-payments-calculation-main .input-output-block table {
                 width: 100%;
                 font: 13px tahoma,helvetica,arial,verdana;
-                /*border: 1px solid grey;*/ /*temp*/
             }
 
                 .utility-payments-calculation-main .input-output-block table td {
                     padding: 10px 5px;
-                    /*border: 1px solid grey;*/ /*temp*/
                 }
 
             .utility-payments-calculation-main .input-output-block td.alignment-right {
@@ -156,49 +154,42 @@
             CheckInputAndCalculate(input, htmlOutSelector, message);
         }
 
-        // Функция, котрая проверяет корректность пользовательского ввода и производит расчет, 
+        // Функция, которая проверяет корректность пользовательского ввода и производит расчет,
         // если введены допустимые величины.
         function CheckInputAndCalculate(input, htmlOutSelector, message) {
-            console.log(input);
             // Объект для хранения результатов проверки корректности ввода
             var checkInput = {
                 income: {},
                 inhabitantsNumber: {},
             }
-            // Проверяем корректность введенных значений
+            // Проверяем корректность введенных значений. Если значения правильные - производим расчет,
+            // иначе выводим сообщения.
             CheckInputIncome(input.income, message, checkInput.income);
             CheckInputInhabitantsNumber(input.inhabitantsNumber, message, checkInput.inhabitantsNumber);
             if (checkInput.income.correctInput && checkInput.inhabitantsNumber.correctInput) {
-                console.log("Все значения введены правильно.");
+                input.inhabitantsNumber = Math.floor(input.inhabitantsNumber);
+                Calculate(input, htmlOutSelector);
             } else {
-                RenderMessages(checkInput, message);
+                RenderMessages({ checkInput: checkInput }, message);
             }
+        }
 
-            //// Если введено положительное число, то производим расчет и выводим результат.
-            //// Иначе выдаем сообщение с описанием ошибки.
-            //if (!isNaN(income)) {
-            //    if (income > 0) {
-            //        // Введено корректное значение. Производим расчет.
-            //        var outPercent = income / 1399.0 / 2.0 * 15.0;
-            //        // Если процент платежа менее 100 %, то выводим результаты.
-            //        // Иначе выводим сообщение, что субсидия не положена.
-            //        if (outPercent < 100.0) {
-            //            // Округляем до 2го знака после запятой.
-            //            outPercent = Math.round(outPercent * 100) / 100;
-            //            // Выводим результат
-            //            $(htmlOutSelector.income).html(income.toFixed(2));
-            //            $(htmlOutSelector.percent).html(outPercent.toFixed(2));
-            //            $(htmlOutSelector.money).html(((outPercent / 100.0) * income).toFixed(2));
-            //        } else {
-            //            $(message.htmlElementSelector).addClass(message.informationClass);
-            //            $(message.htmlElementSelector).html(message.subsidyUnavailable);
-            //        }
-            //    } else {
-            //        $(message.htmlElementSelector).html(message.negativeNumber);
-            //    }
-            //} else {
-            //    $(message.htmlElementSelector).html(message.notNumber);
-            //}
+        // Функция, которая производит расчет и выводит результаты.
+        function Calculate(input, htmlOutSelector) {
+            var percent = input.income / input.inhabitantsNumber / 1399.0 / 2.0 * 15.0;
+            // Если процент платежа менее 100 %, то выводим результаты.
+            // Иначе выводим сообщение, что субсидия не положена.
+            if (percent < 100.0) {
+                // Округляем до 2го знака после запятой.
+                percent = Math.round(percent * 100) / 100;
+                // Выводим результат
+                $(htmlOutSelector.income).html(input.income.toFixed(2));
+                $(htmlOutSelector.inhabitantsNumber).html(input.inhabitantsNumber);
+                $(htmlOutSelector.percent).html(percent.toFixed(2));
+                $(htmlOutSelector.money).html(((percent / 100.0) * input.income).toFixed(2));
+            } else {
+                RenderMessages({ subsidyUnavailable: true }, message);
+            }
         }
 
         // Функция, которая проверяет корректность введенных пользователем значений (среднемесячный доход).
@@ -248,13 +239,18 @@
         }
 
         // Функция, которая выводит сообщения
-        function RenderMessages(checkInput, message) {
+        function RenderMessages(messageState, message) {
             var html = "";
-            if (!checkInput.income.correctInput) {
-                html += "<li class=\"" + checkInput.income.messageClass + "\">" + checkInput.income.message + "</li>";
+            if (messageState.checkInput !== undefined) {
+                if (!messageState.checkInput.income.correctInput) {
+                    html += "<li class=\"" + messageState.checkInput.income.messageClass + "\">" + messageState.checkInput.income.message + "</li>";
+                }
+                if (!messageState.checkInput.inhabitantsNumber.correctInput) {
+                    html += "<li class=\"" + messageState.checkInput.inhabitantsNumber.messageClass + "\">" + messageState.checkInput.inhabitantsNumber.message + "</li>";
+                }
             }
-            if (!checkInput.inhabitantsNumber.correctInput) {
-                html += "<li class=\"" + checkInput.inhabitantsNumber.messageClass + "\">" + checkInput.inhabitantsNumber.message + "</li>";
+            if (messageState.subsidyUnavailable) {
+                html += "<li class=\"information\">" + message.subsidyUnavailable + "</li>";
             }
             $(message.htmlElementSelector).html(html);
         }
@@ -370,66 +366,5 @@
         </div>
         <a href="http://marsovet.org.ua/articles/show/menu/2108">Детальніше про оформлення субсидій>></a>
         <hr />
-        <!--<p>
-            Для розрахунку максимально можливої суми платежу за комунальні послуги
-            у синьому прямокутнику введіть розмір середньомісячного сукупного доходу сім’ї
-            на одну особу за попередній календарний рік
-            <input type="text" id="average_income" class="average-income" />.
-        </p>
-        <div id="error_message" class="error-message">&nbsp;</div>
-        <ol>
-            <li>
-                Ваш обов`язковий відсоток платежу за комунальні послуги становить:
-                <div class="output-block-income">&nbsp;</div>
-                : 1399 : 2 * 15 % = <div class="output-block-percent">&nbsp;</div> %.
-            </li>
-            <li>
-                Максимальна сума платежу за комунальні послуги має бути  не більше ніж:
-                <div class="output-block-percent in-expression">&nbsp;</div> % *
-                <div class="output-block-income">&nbsp;</div> грн. =
-                <div class="output-block-money">&nbsp;</div> грн.
-            </li>
-        </ol>
-        <p class="bold">
-            Якщо Ваші щомісячні витрати на комунальні послуги вище розрахованої максимальної суми платежу, рекомендуємо
-            <a href="http://marsovet.org.ua/articles/show/menu/2108">звернутися до районного управління соціального захисту</a>
-            для отримання більш детальної інформації та оформлення субсидії.
-        </p>
-        <div class="calculation-explanations">
-            <p>
-                Пояснення щодо розрахунку:
-            </p>
-            <ul>
-                <li>
-                    Приклад розрахунку середньомісячного сукупного доходу сім’ї за попередній календарний рік
-                    на одну особу.
-                    <div class="calculation-example">
-                        Наприклад, доходи членів сім’і  за попередній  рік становили:
-                        <ol>
-                            <li>пенсія бабусі – 10 000 грн;</li>
-                            <li>зарплата батька – 50 000 грн;</li>
-                            <li>допомога, що отримує мама на дитину – 12 000 грн;</li>
-                            <li>дитина 3-х років – не отримує дохід.</li>
-                        </ol>
-                        Виходячи з цього сукупний дохід за минулий рік складає: 10 000 + 50 000 + 12 000 = 72 000 грн.
-                        Середньомісячний сукупний дохід сім’ї на одну особу складає
-                        <div style="display: inline-block;">72 000 / 4 / 12 = 1 500 грн.</div>
-                    </div>
-                </li>
-                <li>
-                    1399 – прожитковий мінімум на одну особу на місяць
-                    (з 1 травня 2016 р.– 1 399 грн., з 1 грудня 2016 р. – 1 496 грн.);
-                </li>
-                <li>
-                    2 – базовий коефіцієнт доходу для призначення субсидії;
-                </li>
-                <li>
-                    15 – базова норма плати за житлово-комунальні послуги (%).
-                </li>
-            </ul>
-        </div>
-        <p>
-            <a href="http://marsovet.org.ua/articles/show/menu/2108">Детальніше про оформлення субсидій >></a>
-        </p>-->
     </div>
 </div>
