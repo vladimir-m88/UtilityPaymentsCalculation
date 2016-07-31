@@ -13,7 +13,6 @@
         }
 
         .utility-payments-calculation-main .error-message {
-            margin: -15px auto;
             color: red;
         }
 
@@ -90,46 +89,54 @@
 
 <script>
     (function () {
+        // Объект для хранения информации сообщений об ошибках.
+        var message = {
+            notNumber: "Введене вами значення не є числом. Необхідно вводити додатне число.",
+            negativeNumber: "Ви ввели негативне число або 0. Необхідно вводити додатне число.",
+            subsidyUnavailable: "Можливість отримання субсидії відсутня.",
+            htmlElementSelector: ".utility-payments-calculation-main #error_message",
+            informationClass: "information",
+            htmlElementInitHtml: "&nbsp;",
+        }
+
+        // Селекторы элементов ввода значений пользователем.
+        var htmlInputSelector = {
+            income: ".utility-payments-calculation-main #average_income",
+            inhabitants_number: ".utility-payments-calculation-main #inhabitants_number",
+        }
+
+        // Селекторы элементов в которые производится вывод.
+        var htmlOutSelector = {
+            income: ".utility-payments-calculation-main .output-block-income",
+            percent: ".utility-payments-calculation-main .output-block-percent",
+            money: ".utility-payments-calculation-main .output-block-money",
+        }
+
         // Обработчик события готовности DOM.
         $(document).ready(function () {
-            // Создаем объект для хранения информации сообщений об ошибках.
-            var message = {
-                notNumber: "Введене вами значення не є числом. Необхідно вводити додатне число.",
-                negativeNumber: "Ви ввели негативне число або 0. Необхідно вводити додатне число.",
-                subsidyUnavailable: "Можливість отримання субсидії відсутня.",
-                htmlElementSelector: ".utility-payments-calculation-main #error_message",
-                informationClass: "information",
-                htmlElementInitHtml: "&nbsp;",
-            }
-            // Селекторы элементов ввода значений пользователем.
-            var htmlInputSelector = {
-                income: ".utility-payments-calculation-main #average_income",
-            }
-            // Селекторы элементов в которые производится вывод.
-            var htmlOutSelector = {
-                income: ".utility-payments-calculation-main .output-block-income",
-                percent: ".utility-payments-calculation-main .output-block-percent",
-                money: ".utility-payments-calculation-main .output-block-money",
-            }
             // Очищаем поле ввода значения.
             $(htmlInputSelector.income).val("");
             // Обработка ввода значения пользователем.
-            $(htmlInputSelector.income).change(function () {
-                // Очищаем сообщение об ошибке. И удаляем класс информативного сообщения.
-                $(message.htmlElementSelector).html(message.htmlElementInitHtml);
-                $(message.htmlElementSelector).removeClass(message.informationClass);
-                // Очищаем поля вывода значений.
-                for (var key in htmlOutSelector) {
-                    if (typeof htmlOutSelector[key] == "string") {
-                        $(htmlOutSelector[key]).html("&nbsp;");
-                    }
-                }
-                // Считываем введенное пользователем значение.
-                var income = Number($(this).val());
-                // Производим расчеты и выводим результаты.
-                Calculate(income, htmlOutSelector, message);
-            });
+            $(htmlInputSelector.income).change(UserInputHandler);
+            $(htmlInputSelector.inhabitants_number).change(UserInputHandler);
         });
+
+        function UserInputHandler() {
+            console.log("UserInputHandler()");
+            //// Очищаем сообщение об ошибке. И удаляем класс информативного сообщения.
+            //$(message.htmlElementSelector).html(message.htmlElementInitHtml);
+            //$(message.htmlElementSelector).removeClass(message.informationClass);
+            //// Очищаем поля вывода значений.
+            //for (var key in htmlOutSelector) {
+            //    if (typeof htmlOutSelector[key] == "string") {
+            //        $(htmlOutSelector[key]).html("&nbsp;");
+            //    }
+            //}
+            //// Считываем введенное пользователем значение.
+            //var income = Number($(this).val());
+            //// Производим расчеты и выводим результаты.
+            //Calculate(income, htmlOutSelector, message);
+        }
 
         // Функция, котрая производит расчет на основании введенного пользователем значения
         // и выводит результат.
@@ -191,6 +198,7 @@
                     </tr>
                 </tbody>
             </table>
+            <div id="error_message" class="error-message">&nbsp;</div>
         </div>
         <div class="input-output-block">
             <h4>Розрахунок:</h4>
