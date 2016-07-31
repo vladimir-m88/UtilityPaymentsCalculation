@@ -115,8 +115,12 @@
 
         // Обработчик события готовности DOM.
         $(document).ready(function () {
-            // Очищаем поле ввода значения.
-            $(htmlInputSelector.income).val("");
+            // Очищаем поля ввода значений.
+            for (var key in htmlInputSelector) {
+                if (typeof htmlInputSelector[key] == "string") {
+                    $(htmlInputSelector[key]).val("");
+                }
+            }
             // Обработка ввода значения пользователем.
             $(htmlInputSelector.income).change(function () {
                 UserInputHandler(message, htmlInputSelector, htmlOutSelector);
@@ -146,29 +150,13 @@
                     }
                 }
             }
-            console.log(input.income);
-            console.log(input.inhabitantsNumber);
-            // Производим расчеты и выводим результаты.
-            //Calculate(income, htmlOutSelector, message);
-
-            //// Очищаем сообщение об ошибке. И удаляем класс информативного сообщения.
-            //$(message.htmlElementSelector).html(message.htmlElementInitHtml);
-            //$(message.htmlElementSelector).removeClass(message.informationClass);
-            //// Очищаем поля вывода значений.
-            //for (var key in htmlOutSelector) {
-            //    if (typeof htmlOutSelector[key] == "string") {
-            //        $(htmlOutSelector[key]).html("&nbsp;");
-            //    }
-            //}
-            //// Считываем введенное пользователем значение.
-            //var income = Number($(this).val());
-            //// Производим расчеты и выводим результаты.
-            //Calculate(income, htmlOutSelector, message);
+            // Производим расчет и выводим результаты.
+            Calculate(input, htmlOutSelector, message);
         }
 
         // Функция, котрая производит расчет на основании введенного пользователем значения
         // и выводит результат.
-        function Calculate(income, htmlOutSelector, message) {
+        function Calculate(input, htmlOutSelector, message) {
             // Если введено положительное число, то производим расчет и выводим результат.
             // Иначе выдаем сообщение с описанием ошибки.
             if (!isNaN(income)) {
