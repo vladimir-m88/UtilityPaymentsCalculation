@@ -12,13 +12,13 @@
             margin: 10px auto;
         }
 
-        .utility-payments-calculation-main .error-message {
+        .utility-payments-calculation-main .error-message ul li.error {
             color: red;
         }
 
-            .utility-payments-calculation-main .error-message.information {
-                color: blue;
-            }
+        .utility-payments-calculation-main .error-message ul li.information {
+            color: blue;
+        }
 
         .utility-payments-calculation-main .main-column {
             width: 60%;
@@ -91,12 +91,15 @@
     (function () {
         // Объект для хранения информации сообщений об ошибках.
         var message = {
-            notNumber: "Введене вами значення не є числом. Необхідно вводити додатне число.",
-            negativeNumber: "Ви ввели негативне число або 0. Необхідно вводити додатне число.",
+            incomeEmpty: "Будь ласка, введіть розмір середньомісячного доходу.",
+            incomeNotNumber: "Введене вами значення середньомісячного доходу не є числом. Необхідно вводити додатне число.",
+            incomeNegativeNumber: "Ви ввели негативне значення середньомісячного доходу або 0. Необхідно вводити додатне число.",
+            inhabitantsNumberEmpty: "Будь ласка, введіть чисельність осіб.",
+            inhabitantsNumberNotNumber: "Введене вами значення чисельності осіб не є числом. Необхідно вводити додатне число.",
+            inhabitantsNumberIncorrect: "Ви ввели невірне значення чисельності осіб. Необхідно вводити число не менше одиниці.",
             subsidyUnavailable: "Можливість отримання субсидії відсутня.",
-            htmlElementSelector: ".utility-payments-calculation-main #error_message",
-            informationClass: "information",
-            htmlElementInitHtml: "&nbsp;",
+            htmlElementSelector: ".utility-payments-calculation-main #error_message ul",
+            htmlElementInitHtml: "",
         }
 
         // Селекторы элементов ввода значений пользователем.
@@ -130,11 +133,10 @@
             });
         });
 
-        //
+        // Функция, которая выполняет обработку ввода значения пользователем.
         function UserInputHandler(message, htmlInputSelector, htmlOutSelector) {
-            // Очищаем сообщение об ошибке. И удаляем класс информативного сообщения.
+            // Очищаем сообщение об ошибке.
             $(message.htmlElementSelector).html(message.htmlElementInitHtml);
-            $(message.htmlElementSelector).removeClass(message.informationClass);
             // Очищаем поля вывода значений.
             for (var key in htmlOutSelector) {
                 if (typeof htmlOutSelector[key] == "string") {
@@ -151,37 +153,110 @@
                 }
             }
             // Производим расчет и выводим результаты.
-            Calculate(input, htmlOutSelector, message);
+            CheckInputAndCalculate(input, htmlOutSelector, message);
         }
 
-        // Функция, котрая производит расчет на основании введенного пользователем значения
-        // и выводит результат.
-        function Calculate(input, htmlOutSelector, message) {
-            // Если введено положительное число, то производим расчет и выводим результат.
-            // Иначе выдаем сообщение с описанием ошибки.
-            if (!isNaN(income)) {
-                if (income > 0) {
-                    // Введено корректное значение. Производим расчет.
-                    var outPercent = income / 1399.0 / 2.0 * 15.0;
-                    // Если процент платежа менее 100 %, то выводим результаты.
-                    // Иначе выводим сообщение, что субсидия не положена.
-                    if (outPercent < 100.0) {
-                        // Округляем до 2го знака после запятой.
-                        outPercent = Math.round(outPercent * 100) / 100;
-                        // Выводим результат
-                        $(htmlOutSelector.income).html(income.toFixed(2));
-                        $(htmlOutSelector.percent).html(outPercent.toFixed(2));
-                        $(htmlOutSelector.money).html(((outPercent / 100.0) * income).toFixed(2));
-                    } else {
-                        $(message.htmlElementSelector).addClass(message.informationClass);
-                        $(message.htmlElementSelector).html(message.subsidyUnavailable);
-                    }
-                } else {
-                    $(message.htmlElementSelector).html(message.negativeNumber);
-                }
-            } else {
-                $(message.htmlElementSelector).html(message.notNumber);
+        // Функция, котрая проверяет корректность пользовательского ввода и производит расчет, 
+        // если введены допустимые величины.
+        function CheckInputAndCalculate(input, htmlOutSelector, message) {
+            console.log(input);
+            // Объект для хранения результатов проверки корректности ввода
+            var checkInput = {
+                income: {},
+                inhabitantsNumber: {},
             }
+            // Проверяем корректность введенных значений
+            CheckInputIncome(input.income, message, checkInput.income);
+            CheckInputInhabitantsNumber(input.inhabitantsNumber, message, checkInput.inhabitantsNumber);
+            if (checkInput.income.correctInput && checkInput.inhabitantsNumber.correctInput) {
+                console.log("Все значения введены правильно.");
+            } else {
+                RenderMessages(checkInput, message);
+            }
+
+            //// Если введено положительное число, то производим расчет и выводим результат.
+            //// Иначе выдаем сообщение с описанием ошибки.
+            //if (!isNaN(income)) {
+            //    if (income > 0) {
+            //        // Введено корректное значение. Производим расчет.
+            //        var outPercent = income / 1399.0 / 2.0 * 15.0;
+            //        // Если процент платежа менее 100 %, то выводим результаты.
+            //        // Иначе выводим сообщение, что субсидия не положена.
+            //        if (outPercent < 100.0) {
+            //            // Округляем до 2го знака после запятой.
+            //            outPercent = Math.round(outPercent * 100) / 100;
+            //            // Выводим результат
+            //            $(htmlOutSelector.income).html(income.toFixed(2));
+            //            $(htmlOutSelector.percent).html(outPercent.toFixed(2));
+            //            $(htmlOutSelector.money).html(((outPercent / 100.0) * income).toFixed(2));
+            //        } else {
+            //            $(message.htmlElementSelector).addClass(message.informationClass);
+            //            $(message.htmlElementSelector).html(message.subsidyUnavailable);
+            //        }
+            //    } else {
+            //        $(message.htmlElementSelector).html(message.negativeNumber);
+            //    }
+            //} else {
+            //    $(message.htmlElementSelector).html(message.notNumber);
+            //}
+        }
+
+        // Функция, которая проверяет корректность введенных пользователем значений (среднемесячный доход).
+        function CheckInputIncome(input, message, out) {
+            if (input === undefined) {
+                out.correctInput = false;
+                out.message = message.incomeEmpty;
+                out.messageClass = "information";
+                return false;
+            } else if (isNaN(input)) {
+                out.correctInput = false;
+                out.message = message.incomeNotNumber;
+                out.messageClass = "error";
+                return false;
+            } else if (input <= 0) {
+                out.correctInput = false;
+                out.message = message.incomeNegativeNumber;
+                out.messageClass = "error";
+                return false;
+            } else {
+                out.correctInput = true;
+                return true;
+            }
+        }
+
+        // Функция, которая проверяет корректность введенных пользователем значений (кол-во жильцов).
+        function CheckInputInhabitantsNumber(input, message, out) {
+            if (input === undefined) {
+                out.correctInput = false;
+                out.message = message.inhabitantsNumberEmpty;
+                out.messageClass = "information";
+                return false;
+            } else if (isNaN(input)) {
+                out.correctInput = false;
+                out.message = message.inhabitantsNumberNotNumber;
+                out.messageClass = "error";
+                return false;
+            } else if (input < 1) {
+                out.correctInput = false;
+                out.message = message.inhabitantsNumberIncorrect;
+                out.messageClass = "error";
+                return false;
+            } else {
+                out.correctInput = true;
+                return true;
+            }
+        }
+
+        // Функция, которая выводит сообщения
+        function RenderMessages(checkInput, message) {
+            var html = "";
+            if (!checkInput.income.correctInput) {
+                html += "<li class=\"" + checkInput.income.messageClass + "\">" + checkInput.income.message + "</li>";
+            }
+            if (!checkInput.inhabitantsNumber.correctInput) {
+                html += "<li class=\"" + checkInput.inhabitantsNumber.messageClass + "\">" + checkInput.inhabitantsNumber.message + "</li>";
+            }
+            $(message.htmlElementSelector).html(html);
         }
     })();
 </script>
@@ -214,7 +289,9 @@
                     </tr>
                 </tbody>
             </table>
-            <div id="error_message" class="error-message">&nbsp;</div>
+            <div id="error_message" class="error-message">
+                <ul></ul>
+            </div>
         </div>
         <div class="input-output-block">
             <h4>Розрахунок:</h4>
